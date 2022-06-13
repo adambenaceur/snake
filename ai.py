@@ -4,6 +4,7 @@ import numpy as numpy
 from collections import deque
 from snake_ai import BLOCK_SIZE, SnakeGameAI, Direction, Point
 from model import Linear_QNetwork, Qtrainer
+from chart import plot
 
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
@@ -64,6 +65,7 @@ class AI:
             game.food.y > game.head.y  # food down
             ]
 
+        
         return numpy.array(state, dtype=int)
 
     def remember(self, state, action, reward, next_state, done):
@@ -113,7 +115,7 @@ def train():
 
         #perform move and get new state
         reward, done, score = game.play_step(final_move)
-        state_new = ai.get_State(game)
+        state_new = ai.get_state(game)
 
         # train short memory
         ai.train_short_memory(state_old, final_move, reward, state_new, done)
@@ -135,7 +137,11 @@ def train():
 
             print('Game: ',ai.number_of_games, 'Score: ', 'Record: ', record )
 
-            # TODO: plot
+            plot_scores.append(score)
+            total_score += score
+            mean_score = total_score / ai.number_of_games
+            plot_mean_scores.append(mean_score)
+            plot(plot_scores, plot_mean_scores)
 
 if __name__ == '__main__':
     train()

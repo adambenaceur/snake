@@ -7,7 +7,7 @@ import os
 
 class Linear_QNetwork(neuralNetwork.Module):
     def __init__(self, input_size, hidden_size, output_size):
-        super().__init__
+        super().__init__()
         self.linear1 = neuralNetwork.Linear(input_size, hidden_size)
         self.linear2 = neuralNetwork.Linear(hidden_size, output_size)
 
@@ -19,7 +19,7 @@ class Linear_QNetwork(neuralNetwork.Module):
 
     def save(self, file_name='model.pth'):
         model_folder_path = './model'
-        if os.path.exists(model_folder_path):
+        if not os.path.exists(model_folder_path):
             os.makedirs(model_folder_path)
 
         file_name = os.path.join(model_folder_path, file_name)
@@ -30,7 +30,7 @@ class Qtrainer:
         self.learningRate = learningRate
         self.gamma = gamma
         self.model = model
-        self.optimizer = optimizer.Adam(model.parameter(), learningRate=self.learningRate)
+        self.optimizer = optimizer.Adam(model.parameters(), lr=self.learningRate)
         self.criterion = neuralNetwork.MSELoss()
     
     def train_step(self, state, action, reward, next_state, done):
