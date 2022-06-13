@@ -131,7 +131,7 @@ def train():
 
             if score > record: 
                 record = score
-                # TODO: ai.model.save()
+                ai.model.save()
 
             print('Game: ',ai.number_of_games, 'Score: ', 'Record: ', record )
 
