@@ -1,3 +1,4 @@
+from os import stat
 import torch
 import random
 import numpy as numpy
@@ -10,7 +11,7 @@ MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
 LR = 0.001
 
-class AI:
+class Ai:
 
     def __init__(self):
         self.number_of_games = 0
@@ -18,7 +19,7 @@ class AI:
         self.gamma = 0.9 # discount rate (must be  < 1 )
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
         self.model = Linear_QNetwork(11, 256, 3) # Size of the model
-        self.trainer = Qtrainer(self.model, learningRate=LR, gamma=self.gamma)
+        self.trainer = Qtrainer(self.model, lr=LR, gamma=self.gamma)
 
 
     def get_state(self, game):
@@ -65,7 +66,6 @@ class AI:
             game.food.y > game.head.y  # food down
             ]
 
-        
         return numpy.array(state, dtype=int)
 
     def remember(self, state, action, reward, next_state, done):
@@ -91,7 +91,9 @@ class AI:
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0,2) # 0 , 1 , 2
             final_move[move] = 1
+           
         else:
+            
             state0 = torch.tensor(state, dtype=torch.float)
             prediction = self.model(state0)
             move = torch.argmax(prediction).item()
@@ -104,22 +106,31 @@ def train():
     plot_mean_scores = []
     total_score = 0
     record = 0
-    ai = AI()
+    ai = Ai()
     game = SnakeGameAI()
     while True:
         # get old state
+
+
         state_old = ai.get_state(game)
 
+  
         # get move (based on current state)
         final_move = ai.get_action(state_old)
 
+       
         #perform move and get new state
         reward, done, score = game.play_step(final_move)
+
+     
+      
         state_new = ai.get_state(game)
 
+        
         # train short memory
         ai.train_short_memory(state_old, final_move, reward, state_new, done)
 
+     
         # remember
         ai.remember(state_old, final_move, reward, state_new, done)
 
@@ -135,7 +146,7 @@ def train():
                 record = score
                 ai.model.save()
 
-            print('Game: ',ai.number_of_games, 'Score: ', 'Record: ', record )
+            print('Game: ',ai.number_of_games, 'Score: ', score, 'Record: ', record )
 
             plot_scores.append(score)
             total_score += score
