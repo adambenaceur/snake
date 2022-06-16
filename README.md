@@ -5,7 +5,7 @@
 # state 
 
 <img src="src/state.png"/>
-<img src="src/livestate.png"/>
+<img src="src/live-game-state.png"/>
 
 # reward 
 <img src="src/reward.png"/>
