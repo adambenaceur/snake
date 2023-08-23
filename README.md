@@ -1,20 +1,9 @@
 
-# overview
-<img src="src/overview.png"/>
+requirements
 
-# state 
+Python=3.7
 
-<img src="src/state.png"/>
-<img src="src/live-game-state.png"/>
+pip3 install torch torchvision
 
-# reward 
-<img src="src/reward.png"/>
-
-# neural network
-<img src="src/neural.png"/>
-
-# math
-<img src="src/math1.png"/>
-<img src="src/math2.png"/>
-<img src="src/math3.png"/>
-<img src="src/math4.png"/>
+pip install  matplotlib ipython
+pip install pygame
