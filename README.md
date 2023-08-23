@@ -1,5 +1,11 @@
+# creating enviroment
+conda create -n pygame python=3.7
 
+conda activate pygame
 requirements
+
+
+conda
 
 Python=3.7
 
